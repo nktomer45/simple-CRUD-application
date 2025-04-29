@@ -54,10 +54,12 @@ const UsersList = () => {
   });
 
   const handleEditUser = (user) => {
-    navigate(`/users/edit/${user.id}`);
+
+    navigate(`/users/edit/${user._id}`);
   };
 
   const confirmDeleteUser = (user) => {
+
     setUserToDelete(user);
   };
 

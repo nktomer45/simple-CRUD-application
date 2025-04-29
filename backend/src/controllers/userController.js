@@ -12,8 +12,10 @@ const getUsers = async (req, res) => {
       data: users
     });
   } catch (error) {
-    res.status(500);
-    throw new Error('Server error while fetching users');
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      stack: process.env.NODE_ENV === 'production' ? '🥞' : err.stack});
   }
 };
 
@@ -25,8 +27,10 @@ const getUserById = async (req, res) => {
     const user = await User.findById(req.params.id);
     
     if (!user) {
-      res.status(404);
-      throw new Error('User not found');
+     return res.status(404).json({
+        success: false,
+        message: "no user existed",
+        stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack});
     }
     
     res.status(200).json({
@@ -35,12 +39,16 @@ const getUserById = async (req, res) => {
     });
   } catch (error) {
     if (error.kind === 'ObjectId') {
-      res.status(404);
-      throw new Error('User not found');
+      res.status(500).json({
+        success: false,
+        message: error.message,
+        stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack});
     }
-    res.status(500);
-    throw new Error('Server error while fetching user');
-  }
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack});
+    }
 };
 
 // @desc    Create a user
@@ -51,8 +59,10 @@ const createUser = async (req, res) => {
     const existingUser = await User.findOne({ email: req.body.email });
     
     if (existingUser) {
-      res.status(400);
-      throw new Error('User with this email already exists');
+      return res.status(400).json({
+        success: false,
+        message: "User with this email already exists",
+        stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack});
     }
     
     const user = await User.create(req.body);
@@ -62,9 +72,13 @@ const createUser = async (req, res) => {
       data: user
     });
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message || 'Error creating user');
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack
+    });
   }
+    
 };
 
 // @desc    Update a user
@@ -75,15 +89,20 @@ const updateUser = async (req, res) => {
     const user = await User.findById(req.params.id);
     
     if (!user) {
-      res.status(404);
-      throw new Error('User not found');
+     return res.status(404).json({
+        success: false,
+        message: "User not found",
+        stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack});
+
     }
     
     if (req.body.email && req.body.email !== user.email) {
       const existingUser = await User.findOne({ email: req.body.email });
       if (existingUser) {
-        res.status(400);
-        throw new Error('User with this email already exists');
+        res.status(400).json({
+          success: false,
+          message: "User with this email already exists",
+          stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack});
       }
     }
     
@@ -98,12 +117,11 @@ const updateUser = async (req, res) => {
       data: updatedUser
     });
   } catch (error) {
-    if (error.kind === 'ObjectId') {
-      res.status(404);
-      throw new Error('User not found');
-    }
-    res.status(error.statusCode || 500);
-    throw new Error(error.message || 'Error updating user');
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack
+    });
   }
 };
 
@@ -115,8 +133,11 @@ const deleteUser = async (req, res) => {
     const user = await User.findById(req.params.id);
     
     if (!user) {
-      res.status(404);
-      throw new Error('User not found');
+     return res.status(404).json({
+      success: false,
+      message: "no user is existed",
+      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack
+    });
     }
     
     await user.deleteOne();
@@ -127,12 +148,11 @@ const deleteUser = async (req, res) => {
       data: {}
     });
   } catch (error) {
-    if (error.kind === 'ObjectId') {
-      res.status(404);
-      throw new Error('User not found');
-    }
-    res.status(500);
-    throw new Error('Server error while deleting user');
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack
+    });
   }
 };
 

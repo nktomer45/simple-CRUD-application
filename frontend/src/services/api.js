@@ -1,33 +1,5 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Mock data for development/demo purposes
-const MOCK_USERS = [
-  {
-    id: '1',
-    user: 'John Doe',
-    email: 'john@example.com',
-    age: 28,
-    mobile: 1234567890,
-    interest: ['Programming', 'Reading']
-  },
-  {
-    id: '2',
-    user: 'Jane Smith',
-    email: 'jane@example.com',
-    age: 32,
-    mobile: 9876543210,
-    interest: ['Design', 'Photography']
-  },
-  {
-    id: '3',
-    user: 'Mike Johnson',
-    email: 'mike@example.com',
-    age: 35,
-    mobile: 5554443333,
-    interest: ['Sports', 'Music', 'Travel']
-  }
-];
-
 export const api = {
   // Get all users
   getUsers: async () => {

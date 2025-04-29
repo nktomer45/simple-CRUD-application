@@ -29,8 +29,8 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50  mb-12" >
       <DashboardHeader />
 
-      <div className="container mx-auto py-12 px-4  mt-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 mt-9">
+      <div className="container mx-auto py-12 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 mt-3">
           <Card>
             <CardHeader>
               <CardTitle>Total Users</CardTitle>
@@ -121,10 +121,10 @@ const Index = () => {
                   {latestUsers.map((user) => (
                     <div
                       key={user.id}
-                      className="flex items-center justify-between border-b pb-5"
+                      className="flex items-center justify-between border-b mb-4"
                     >
-                      <div className="flex items-center gap-6 p-5">
-                        <Avatar className="h-10 w-10 bg-secondary mt-10 flex justify-center ">
+                      <div className="flex items-center gap-3 mb-3">
+                        <Avatar className="h-10 w-10 bg-secondary mt-1 flex justify-center ">
                           <span className="text-xs font-semibold flex items-center">
                             {user.user.substring(0, 2).toUpperCase()}
                           </span>
@@ -163,12 +163,6 @@ const Index = () => {
               </div>
             )}
           </CardContent>
-          {/* <Button
-  onClick={() => navigate("/users/new")}
-  className="fixed bottom-5 right-5 bg-[#060a14] text-white w-[53px] h-[53px] rounded-full shadow-lg hover:bg-blue-700 text-2xl flex items-center justify-center z-50"
->
-  +
-</Button> */}
 
 
 
