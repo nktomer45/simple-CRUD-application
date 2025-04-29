@@ -54,18 +54,26 @@ const UsersList = () => {
   });
 
   const handleEditUser = (user) => {
-
+    console.log("Edit user:", user);
     navigate(`/users/edit/${user._id}`);
   };
 
   const confirmDeleteUser = (user) => {
-
+    console.log("Confirming delete for user:", user);
     setUserToDelete(user);
   };
 
   const handleDeleteUser = () => {
-    if (userToDelete?.id) {
-      deleteMutation.mutate(userToDelete.id);
+    if (userToDelete) {
+      const userId = userToDelete._id || userToDelete.id;
+      console.log("Deleting user with ID:", userId);
+      if (userId) {
+        deleteMutation.mutate(userId);
+      } else {
+        console.error("No valid ID found for user:", userToDelete);
+        toast.error("Failed to delete user: No valid ID found");
+        setUserToDelete(null);
+      }
     }
   };
 
@@ -94,7 +102,7 @@ const UsersList = () => {
           </TableRow>
         ) : (
           filteredUsers.map((user) => (
-            <TableRow key={user.id}>
+            <TableRow key={user._id || user.id}>
               <TableCell className="font-medium">{user.user}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.age}</TableCell>
@@ -140,7 +148,7 @@ const UsersList = () => {
       ) : (
         filteredUsers.map((user) => (
           <UserCard
-            key={user.id}
+            key={user._id || user.id}
             user={user}
             onEdit={handleEditUser}
             onDelete={confirmDeleteUser}
@@ -169,7 +177,7 @@ const UsersList = () => {
             <PlusCircle className="h-4 w-4 mr-1" /> Add New User
           </Button>
         </div>
-
+        
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
           <div className="p-4 border-b border-gray-200 flex items-center">
             <div className="relative flex-1">
