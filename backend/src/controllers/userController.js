@@ -48,7 +48,6 @@ const getUserById = async (req, res) => {
 // @access  Public
 const createUser = async (req, res) => {
   try {
-    // Check if email already exists
     const existingUser = await User.findOne({ email: req.body.email });
     
     if (existingUser) {
@@ -80,7 +79,6 @@ const updateUser = async (req, res) => {
       throw new Error('User not found');
     }
     
-    // Check if updating email and it already exists
     if (req.body.email && req.body.email !== user.email) {
       const existingUser = await User.findOne({ email: req.body.email });
       if (existingUser) {
